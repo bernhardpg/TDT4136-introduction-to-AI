@@ -4,16 +4,15 @@ from PIL import Image
 def main():
 
     BOARD_PATH = "00_assets/boards/"
-    BOARD_FILE = "board-2-4.txt"
+    BOARD_NAME = "board-2-4.txt"
     TILE_SIZE = 30
     LINE_SIZE = 1
     EXPORT_FILE = "test.png"
 
-    board, width, height = importBoard(BOARD_PATH, BOARD_FILE)
-    boardImage = createBoardImage(board, width, height, TILE_SIZE, LINE_SIZE)
-
-    boardImage.show()
-    boardImage.save(EXPORT_FILE)
+    board = importBoard(BOARD_PATH, BOARD_NAME)
+    boardIm = createBoardImage(board, TILE_SIZE, LINE_SIZE)
+    boardIm.show()
+    printMatrix(board)
 
     return
 

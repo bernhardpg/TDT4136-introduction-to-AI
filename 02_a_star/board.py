@@ -1,46 +1,69 @@
 # TODO Figure out how the agent will read the board, and change the functions accordingly
-# TODO Consider adding black grid lines?
-# TODO Create docstrings
 
 from PIL import Image
 
-def importBoard(BOARD_PATH, BOARD_FILE):
-    f = open(BOARD_PATH + BOARD_FILE, 'r')
+def importBoard(BOARD_PATH, BOARD_NAME):
+    """
+    Imports the board from a 'txt' file and returns the corresponding
+    board matrix.
+
+    """
+    f = open(BOARD_PATH + BOARD_NAME, 'r')
     boardString = f.read()
     f.close()
 
-    board, width, height = getBoardFromString(boardString)
-    return board, width, height
+    board = getBoardFromString(boardString)
+    return board
 
-# Converts the string matrix to a two-dimensional
-# matrix containing the color of each tile
 def getBoardFromString(boardString):
-    board = list()
-    row = list()
+    """
+    @param boardString: a string sequence containing
+        the entire board data
+
+    @return: the board represented by a two-dimensional matrix
+    """
+    board = []
+    row = []
 
     for char in boardString:
         if (char == '\n'):
             board.append(row)
-            row = list()
+            row = []
         else:
-            row.append(convertCharToColor(char))
+            row.append(char)
 
+    return board
+
+def createBoardImage(board, TILE_SIZE, LINE_SIZE):
+    """
+    @param: board
+    @param: TILE_SIZE
+    @param: LINE_SIZE
+
+    @return: Board with colors as an Image object
+
+    """
     height = len(board)
     width = len(board[0])
 
-    return board, width, height
+    boardColors = getTileColorMatrix(board)
 
-# Creates a Image object of the board
-def createBoardImage(board, width, height, TILE_SIZE, LINE_SIZE):
     imSize = (width* (TILE_SIZE + LINE_SIZE), height* (TILE_SIZE + LINE_SIZE))
     boardIm = Image.new('RGB', imSize)
 
-    colorPixels(boardIm, board, TILE_SIZE, LINE_SIZE)
+    colorPixels(boardIm, boardColors, TILE_SIZE, LINE_SIZE)
 
     return boardIm
 
-# Color the pixels in im according to the pixels set in board, and with the tilesize given
-def colorPixels(im, board, TILE_SIZE, LINE_SIZE):
+def colorPixels(im, colorMatrix, TILE_SIZE, LINE_SIZE):
+    """
+    @param im: Image object to be colored.
+    @param colorMatrix: Matrix containing the color information
+        for each pixel.
+    @param TILE_SIZE
+    @param LINE_SIZE
+
+    """
     pixelMap = im.load()
     width, height = im.size
 
@@ -48,23 +71,41 @@ def colorPixels(im, board, TILE_SIZE, LINE_SIZE):
         for j in range(width):
             if ((i % (TILE_SIZE + LINE_SIZE) < LINE_SIZE)
                 or (j % (TILE_SIZE + LINE_SIZE)) < LINE_SIZE):
-                pixelMap[j, i] = (0, 0, 0) #Black
+                pixelMap[j, i] = (0, 0,0) #Black
             else:
-                pixelMap[j, i] = board[int(i/(TILE_SIZE + LINE_SIZE))][int(j/(TILE_SIZE + LINE_SIZE))]
+                pixelMap[j, i] = colorMatrix[int(i/(TILE_SIZE + LINE_SIZE))][int(j/(TILE_SIZE + LINE_SIZE))]
 
     return
 
-# NOTE Currently not in use
-# Breaks the sequence of pixels down to a two-dimensional matrix
-def getPixelMatrix(im):
+def getTileColorMatrix(matrix):
+    """
+    @param boardMatrix: The board represented by a
+        two-dimensional matrix with chars
 
-    pixels = list(im.getdata())
-    width, height = im.size
-    pixels = [pixels[i * width:(i + 1) * width] for i in range(height)]
+    @return The corresponding matrix with each entry as
+        a tupple containing the pixel color
+    """
+    boardColors = []
+    row = []
 
-    return pixels
+    height = len(matrix)
+    width = len(matrix[0])
 
-def convertCharToColor(char):
+    for i in range(height):
+        for j in range(width):
+            row.append(getTileColor(matrix[i][j]))
+        boardColors.append(row)
+        row = []
+
+    return boardColors
+
+def getTileColor(char):
+    """
+    @param char: Char to be translated to color code
+
+    @return: Tuple containing RGB information: (R, G, B)
+
+    """
     ## STANDARD COLORS
     GREY = (100, 100, 100)
     WHITE = (255, 255, 255)
@@ -93,3 +134,19 @@ def convertCharToColor(char):
 
     return translations[char]
 
+def printMatrix(matrix):
+    height = len(matrix)
+    width = len(matrix[0])
+    rowString = "| "
+
+    for i in range(height):
+        for j in range(width):
+            rowString += matrix[i][j]
+            if (j == width - 1):
+                rowString += " |"
+            else:
+                rowString += " "
+        print(rowString)
+        rowString = "| "
+
+    return
