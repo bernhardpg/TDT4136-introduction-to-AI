@@ -14,10 +14,10 @@ def main(argv):
 
     BOARD_PATH = "00_assets/boards/"
     BOARD_NAME = "board-2-1.txt"
-    TILE_SIZE = 30
-    LINE_SIZE = 1
+    TILE_SIZE = 100
+    LINE_SIZE = 3
     CIRCLE_COLOR = getColor('o')
-    CIRCLE_RADIUS = 3
+    CIRCLE_RADIUS = 20
     EXPORT_FILE = "test.png"
 
     # Use command line argument if given
@@ -27,9 +27,6 @@ def main(argv):
     board = importBoard(BOARD_PATH, BOARD_NAME)
     boardIm = createBoardImage(board, TILE_SIZE, LINE_SIZE)
     boardPath = generateTestPath(len(board[0]), len(board))
-
-    printMatrix(boardPath)
-    printMatrix(board)
 
     drawPath(boardIm, boardPath, TILE_SIZE, LINE_SIZE, CIRCLE_COLOR, CIRCLE_RADIUS)
 

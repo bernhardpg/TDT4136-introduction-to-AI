@@ -133,7 +133,7 @@ def getColor(char):
     ROADS = (153, 102, 51)
 
     ## PATH COLOR
-    PATH = (255, 0, 255)
+    PATH = (0, 0, 0)
 
     translations = {
         ".": WHITE,
