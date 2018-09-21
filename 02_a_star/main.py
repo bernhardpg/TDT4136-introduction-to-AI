@@ -1,30 +1,32 @@
-from board import *
-from visualizer import *
+import sys
 from PIL import Image
 
-def main():
+from board import *
+from visualizer import *
+from tests import *
+
+
+def main(argv):
+    """
+    @param argv takes a board number as argument:
+        i.e. 1-1, 1-2 etc.
+    """
 
     BOARD_PATH = "00_assets/boards/"
-    BOARD_NAME = "board-1-1.txt"
+    BOARD_NAME = "board-2-1.txt"
     TILE_SIZE = 30
     LINE_SIZE = 1
     CIRCLE_COLOR = getColor('o')
     CIRCLE_RADIUS = 3
     EXPORT_FILE = "test.png"
 
+    # Use command line argument if given
+    if (len(argv)):
+        BOARD_NAME = "board-" + argv[0] + ".txt"
+
     board = importBoard(BOARD_PATH, BOARD_NAME)
     boardIm = createBoardImage(board, TILE_SIZE, LINE_SIZE)
-    boardPath = generateEmptyBoard(len(board[0]), len(board))
-
-    boardPath[3][3] = 'o'
-    boardPath[3][4] = 'o'
-    boardPath[3][5] = 'o'
-    boardPath[3][6] = 'o'
-    boardPath[3][7] = 'o'
-    boardPath[3][8] = 'o'
-    boardPath[4][8] = 'o'
-    boardPath[5][8] = 'o'
-    boardPath[6][8] = 'o'
+    boardPath = generateTestPath(len(board[0]), len(board))
 
     printMatrix(boardPath)
     printMatrix(board)
@@ -36,5 +38,5 @@ def main():
     return
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
 
