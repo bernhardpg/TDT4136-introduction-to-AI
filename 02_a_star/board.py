@@ -1,5 +1,3 @@
-# TODO Figure out how the agent will read the board, and change the functions accordingly
-
 from PIL import Image
 
 def importBoard(BOARD_PATH, BOARD_NAME):
@@ -46,7 +44,7 @@ def createBoardImage(board, TILE_SIZE, LINE_SIZE):
     height = len(board)
     width = len(board[0])
 
-    boardColors = getTileColorMatrix(board)
+    boardColors = getColorMatrix(board)
 
     imSize = (width* (TILE_SIZE + LINE_SIZE), height* (TILE_SIZE + LINE_SIZE))
     boardIm = Image.new('RGB', imSize)
@@ -77,7 +75,7 @@ def colorPixels(im, colorMatrix, TILE_SIZE, LINE_SIZE):
 
     return
 
-def getTileColorMatrix(matrix):
+def getColorMatrix(matrix):
     """
     @param boardMatrix: The board represented by a
         two-dimensional matrix with chars
@@ -93,13 +91,68 @@ def getTileColorMatrix(matrix):
 
     for i in range(height):
         for j in range(width):
-            row.append(getTileColor(matrix[i][j]))
+            row.append(getColor(matrix[i][j]))
         boardColors.append(row)
         row = []
 
     return boardColors
 
-def getTileColor(char):
+def drawCircle(im, x, y, TILE_SIZE, LINE_SIZE, CIRCLE_COLOR, CIRCLE_RADIUS):
+    """
+    Draws a circle in the center of the desired tile
+
+    @param im: Image object
+    @param x, y: tile coordinates (NOT pixel coordinates)
+    @TILE_SIZE, LINE_SIZE: constants
+    @radius
+    æcolor
+    """
+    pixelMap = im.load()
+    offsetX = (TILE_SIZE + LINE_SIZE) * x + LINE_SIZE
+    offsetY = (TILE_SIZE + LINE_SIZE) * y + LINE_SIZE
+
+    for i in range(TILE_SIZE):
+        for j in range(TILE_SIZE):
+            # Circle equation: (x - centerX)**2 + (y - centerY)**2 == radius**2
+            if ((j - ((TILE_SIZE - 1)/ 2))**2 + (i - ((TILE_SIZE - 1)/ 2))**2 < (CIRCLE_RADIUS**2)):
+                pixelMap[i + offsetX, j + offsetY] = CIRCLE_COLOR
+
+    return
+
+def generateEmptyBoard(width, height):
+    """
+    Generates an empty board matrix filled with '.'
+
+    """
+    board = []
+    row = []
+
+    for i in range(height):
+        for j in range(width):
+            row.append('.')
+        board.append(row)
+        row = []
+
+    return board
+
+def drawPath(boardIm, boardPath, TILE_SIZE, LINE_SIZE, CIRCLE_COLOR, CIRCLE_RADIUS):
+    """
+    Draws a given boardPath onto the boardIm object.
+    @param boardIm: board as Image object
+    @param boardPath: path to be drawn represented by a two dimensional matrix
+        '.' represents an empty tile
+        'o' represents a part of the path
+    """
+    height = len(boardPath)
+    width = len(boardPath[0])
+
+    for i in range(height):
+        for j in range(width):
+            if (boardPath[i][j] == 'o'):
+                drawCircle(boardIm, j, i, TILE_SIZE, LINE_SIZE, CIRCLE_COLOR, CIRCLE_RADIUS)
+    return
+
+def getColor(char):
     """
     @param char: Char to be translated to color code
 
@@ -112,6 +165,7 @@ def getTileColor(char):
     RED = (255, 0, 0)
     GREEN = (0, 255, 0)
     BLUE = (0, 0, 255)
+    YELLOW = (255, 255, 0)
 
     ## TERRAIN COLORS
     WATER = (0, 204, 255)
@@ -121,6 +175,7 @@ def getTileColor(char):
     ROADS = (153, 102, 51)
 
     translations = {
+        "o": YELLOW,
         ".": WHITE,
         "#": GREY,
         "A": GREEN,
