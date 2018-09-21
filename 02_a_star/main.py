@@ -5,7 +5,7 @@ from PIL import Image
 def main():
 
     BOARD_PATH = "00_assets/boards/"
-    BOARD_NAME = "board-2-4.txt"
+    BOARD_NAME = "board-1-1.txt"
     TILE_SIZE = 30
     LINE_SIZE = 1
     CIRCLE_COLOR = getColor('o')

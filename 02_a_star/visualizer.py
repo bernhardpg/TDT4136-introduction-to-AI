@@ -127,13 +127,13 @@ def getColor(char):
 
     ## TERRAIN COLORS
     WATER = (0, 204, 255)
-    MOUNTAINS = (200, 200, 200)
+    MOUNTAINS = (120, 120, 120)
     FORESTS = (0, 102, 0)
     GRASSLANDS = (153, 225, 153)
     ROADS = (153, 102, 51)
 
     ## PATH COLOR
-    PATH = (255, 255, 100)
+    PATH = (255, 0, 255)
 
     translations = {
         ".": WHITE,
