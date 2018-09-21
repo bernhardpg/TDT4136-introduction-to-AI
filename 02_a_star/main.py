@@ -1,4 +1,5 @@
 from board import *
+from visualizer import *
 from PIL import Image
 
 def main():
