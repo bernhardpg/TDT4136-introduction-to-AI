@@ -32,7 +32,7 @@ def main(argv):
     start, goal = brd.getStartAndGoal(boardMatrix)
 
     boardGraph = grph.SquareGrid(boardMatrix)
-    path = agent.dijkstra(boardGraph, start, goal)
+    path = agent.aStar(boardGraph, start, goal)
     boardPath = brd.constructPathMatrix(boardGraph, path)
 
     boardIm = vis.createBoardImage(boardMatrix, TILE_SIZE, LINE_SIZE)

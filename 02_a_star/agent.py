@@ -38,6 +38,7 @@ def BFS(graph, start, goal):
 
 
 def dijkstra(graph, start, goal):
+    """ Implementation of Dijstras algorithm. """
 
     frontier = PriorityQueue()
     frontier.put(start, 0)
@@ -65,9 +66,44 @@ def dijkstra(graph, start, goal):
 
     path = reconstructPath(parents, start, goal)
 
-    # It might be useful to return costSoFar
-    return path
+    return path, costSoFar
 
+def heuristic(a, b):
+    """ Heuristic function used by A* """
+    (x1, y1) = a
+    (x2, y2) = b
+
+    return abs(x1 - x2) + abs(y1 - y2)
+
+def aStar(graph, start, goal):
+    """ Implementation of A* """
+
+    frontier = PriorityQueue()
+    frontier.put(start, 0)
+
+    parents = {}
+    costSoFar = {}
+
+    parents[start] = None
+    costSoFar[start] = 0
+
+    while not frontier.empty():
+        current = frontier.get()
+
+        if current == goal:
+            break;
+
+        for next in graph.neighbors(current):
+            newCost = costSoFar[current] + graph.cost(next)
+            if next not in costSoFar or newCost < costSoFar[next]:
+                costSoFar[next] = newCost
+                priority = newCost + heuristic(goal, next)
+                frontier.put(next, priority)
+                parents[next] = current
+
+    path = reconstructPath(parents, start, goal)
+ 
+    return path
 
 def reconstructPath(parents, start, goal):
     """ Returns a list with the sequence of nodes in the path. """
