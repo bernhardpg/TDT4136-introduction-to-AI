@@ -4,15 +4,30 @@ Toolkit for creating and modifying a graph representation of a two dimensional m
 
 """
 
+
 class SquareGrid:
     """ General Graph object """
+    costs = {
+        '#': 99999,
+        'w': 100,
+        'm': 50,
+        'f': 10,
+        'g': 5,
+        'r': 1,
+        '.': 0,
+        'A': 0,
+        'B': 0,
+    }
     def __init__(self, matrix):
         self.width = len(matrix[0])
         self.height = len(matrix)
         self.nodes = getNodesFromMatrix(matrix, self.width, self.height)
+        self.matrix = matrix
 
     def neighbors(self, node):
         return getNeighbors(node, self.nodes)
+    def cost(self, toNode):
+        return self.costs[self.matrix[toNode[1]][toNode[0]]]
 
 
 def getNodesFromMatrix(matrix, width, height):
@@ -21,8 +36,7 @@ def getNodesFromMatrix(matrix, width, height):
 
     for x in range(width):
         for y in range(height):
-            if not matrix[y][x] == '#':
-                nodes.append((x, y))
+            nodes.append((x, y))
 
     return nodes
 
