@@ -9,7 +9,7 @@ class SquareGrid:
     def __init__(self, matrix):
         self.width = len(matrix[0])
         self.height = len(matrix)
-        self.nodes  = getNodesFromMatrix(matrix, self.width, self.height)
+        self.nodes = getNodesFromMatrix(matrix, self.width, self.height)
 
     def neighbors(self, node):
         return getNeighbors(node, self.nodes)
@@ -21,7 +21,8 @@ def getNodesFromMatrix(matrix, width, height):
 
     for x in range(width):
         for y in range(height):
-            nodes.append((x, y))
+            if not matrix[y][x] == '#':
+                nodes.append((x, y))
 
     return nodes
 

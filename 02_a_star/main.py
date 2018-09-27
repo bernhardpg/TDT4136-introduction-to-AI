@@ -10,8 +10,8 @@ import agent
 
 BOARD_PATH = "00_assets/boards/"
 BOARD_NAME = "board-1-1.txt"
-TILE_SIZE = 100
-LINE_SIZE = 3
+TILE_SIZE = 60
+LINE_SIZE = 2
 CIRCLE_COLOR = vis.getColor('o')
 CIRCLE_RADIUS = 20
 EXPORT_FILE = "test.png"
@@ -28,14 +28,16 @@ def main(argv):
     if (len(argv)):
         BOARD_NAME = "board-" + argv[0] + ".txt"
 
-    # TODO remove tiles that are obstacles
     boardMatrix = brd.importBoard(BOARD_PATH, BOARD_NAME)
     start, goal = brd.getStartAndGoal(boardMatrix)
 
     boardGraph = grph.SquareGrid(boardMatrix)
     parents = agent.BFS(boardGraph, start, goal)
-    path = brd.constructPathMatrix(boardGraph, parents, goal)
-    brd.printMatrix(path)
+    boardPath = brd.constructPathMatrix(boardGraph, parents, goal)
+
+    boardIm = vis.createBoardImage(boardMatrix, TILE_SIZE, LINE_SIZE)
+    vis.drawPath(boardIm, boardPath, TILE_SIZE, LINE_SIZE, CIRCLE_COLOR, CIRCLE_RADIUS)
+    boardIm.show()
 
     return
 
