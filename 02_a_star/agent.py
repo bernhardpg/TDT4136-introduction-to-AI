@@ -28,7 +28,8 @@ def BFS(graph, start, goal):
 
         for next in graph.neighbors(current):
             # checks wheter next is a key in parent
-            if next not in parents:
+            # Make sure the next node is not an impenetrable obstacle
+            if next not in parents and graph.cost(next) < 9999:
                 frontier.put(next)
                 parents[next] = current
 
@@ -66,7 +67,7 @@ def dijkstra(graph, start, goal):
 
     path = reconstructPath(parents, start, goal)
 
-    return path, costSoFar
+    return path
 
 def heuristic(a, b):
     """ Heuristic function used by A* """

@@ -31,23 +31,31 @@ def main(argv):
 
     boards = 4
     levels = 2
+    algorithms = ["BFS", "dijkstra", "aStar"]
 
-    for level in range(1, levels + 1):
-        for board in range(1, boards + 1):
-            boardName = "board-" + str(level) + "-" + str(board) + ".txt"
-            fileName = "01_solved_boards/board-" + str(level) + "-" + str(board) + ".png"
+    for algorithm in algorithms:
+        for level in range(1, levels + 1):
+            for board in range(1, boards + 1):
+                boardName = "board-" + str(level) + "-" + str(board) + ".txt"
+                fileName = "01_solved_boards/board-" + str(level) + "-" + str(board) + "-" + algorithm + ".png"
 
-            solveBoard(BOARD_PATH, boardName, fileName)
+                solveBoard(BOARD_PATH, boardName, fileName, algorithm)
 
     return
 
 
-def solveBoard(BOARD_PATH, boardName, fileName):
+def solveBoard(BOARD_PATH, boardName, fileName, algorithm):
     boardMatrix = brd.importBoardMatrix(BOARD_PATH, boardName)
     start, goal = brd.getStartAndGoal(boardMatrix)
 
     boardGraph = grph.SquareGrid(boardMatrix)
-    path = agent.aStar(boardGraph, start, goal)
+
+    if algorithm == "BFS":
+        path = agent.BFS(boardGraph, start, goal)
+    if algorithm == "dijkstra":
+        path = agent.dijkstra(boardGraph, start, goal)
+    if algorithm == "aStar":
+        path = agent.aStar(boardGraph, start, goal)
 
     boardIm = BoardImage(boardMatrix, TILE_SIZE, LINE_SIZE, CIRCLE_COLOR, CIRCLE_RADIUS)
     boardIm.drawPath(path)
