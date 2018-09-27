@@ -60,14 +60,12 @@ def generateEmptyBoard(width, height):
 
     return board
 
-def constructPathMatrix(graph, parents, goal):
+def constructPathMatrix(graph, path):
     pathMatrix = generateEmptyBoard(graph.width, graph.height)
-    current = goal
 
-    while not current == None:
+    for node in path:
         # has to be y, x when writing to a two-dimensional matrix!
-        pathMatrix[current[1]][current[0]] = 'o'
-        current = parents[current]
+        pathMatrix[node[1]][node[0]] = 'o'
 
     return pathMatrix
 
