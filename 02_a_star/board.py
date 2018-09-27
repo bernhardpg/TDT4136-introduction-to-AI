@@ -38,6 +38,19 @@ def getBoardFromString(boardString):
 
     return board
 
+def getStartAndGoal(boardMatrix):
+    width = len(boardMatrix[0])
+    height = len(boardMatrix)
+
+    for y in range(height):
+        for x in range(width):
+            if boardMatrix[y][x] == 'A':
+                start = (x, y)
+            elif boardMatrix[y][x] == 'B':
+                goal = (x, y)
+
+    return start, goal
+
 def generateEmptyBoard(width, height):
     """
     Generates an empty board matrix filled with '.'

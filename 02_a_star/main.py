@@ -30,15 +30,10 @@ def main(argv):
 
     # TODO remove tiles that are obstacles
     boardMatrix = brd.importBoard(BOARD_PATH, BOARD_NAME)
-    print("Board matrix:")
-    #brd.printMatrix(boardMatrix)
+    start, goal = brd.getStartAndGoal(boardMatrix)
 
     boardGraph = grph.SquareGrid(boardMatrix)
-    start = (0,0)
-    goal = (0,5)
-
     parents = agent.BFS(boardGraph, start, goal)
-    print(parents)
     path = brd.constructPathMatrix(boardGraph, parents, goal)
     brd.printMatrix(path)
 
