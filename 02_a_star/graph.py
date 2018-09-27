@@ -8,7 +8,7 @@ Toolkit for creating and modifying a graph representation of a two dimensional m
 class SquareGrid:
     """ General Graph object """
     costs = {
-        '#': 99999,
+        '#': 99999999,
         'w': 100,
         'm': 50,
         'f': 10,

@@ -29,7 +29,21 @@ def main(argv):
     if (len(argv)):
         BOARD_NAME = "board-" + argv[0] + ".txt"
 
-    boardMatrix = brd.importBoardMatrix(BOARD_PATH, BOARD_NAME)
+    boards = 4
+    levels = 2
+
+    for level in range(1, levels + 1):
+        for board in range(1, boards + 1):
+            boardName = "board-" + str(level) + "-" + str(board) + ".txt"
+            fileName = "01_solved_boards/board-" + str(level) + "-" + str(board) + ".png"
+
+            solveBoard(BOARD_PATH, boardName, fileName)
+
+    return
+
+
+def solveBoard(BOARD_PATH, boardName, fileName):
+    boardMatrix = brd.importBoardMatrix(BOARD_PATH, boardName)
     start, goal = brd.getStartAndGoal(boardMatrix)
 
     boardGraph = grph.SquareGrid(boardMatrix)
@@ -37,9 +51,7 @@ def main(argv):
 
     boardIm = BoardImage(boardMatrix, TILE_SIZE, LINE_SIZE, CIRCLE_COLOR, CIRCLE_RADIUS)
     boardIm.drawPath(path)
-    boardIm.show()
-
-    return
+    boardIm.save(fileName)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

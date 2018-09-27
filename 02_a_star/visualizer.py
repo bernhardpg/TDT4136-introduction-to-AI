@@ -38,6 +38,10 @@ class BoardImage:
                                    self.TILE_SIZE, self.LINE_SIZE,
                                    self.CIRCLE_COLOR, self.CIRCLE_RADIUS)
 
+    def save(self, fileName):
+        self.im.save(fileName)
+
+
 def createBoardImage(board, TILE_SIZE, LINE_SIZE):
     """
     @param: board
