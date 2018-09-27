@@ -34,11 +34,9 @@ def main(argv):
 
     boardGraph = grph.SquareGrid(boardMatrix)
     path = agent.aStar(boardGraph, start, goal)
-    boardPath = brd.constructPathMatrix(boardGraph, path)
 
     boardIm = BoardImage(boardMatrix, TILE_SIZE, LINE_SIZE, CIRCLE_COLOR, CIRCLE_RADIUS)
-    print(path)
-    boardIm.drawPath(boardPath)
+    boardIm.drawPath(path)
     boardIm.show()
 
     return

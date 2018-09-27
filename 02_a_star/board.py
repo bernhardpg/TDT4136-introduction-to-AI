@@ -60,8 +60,8 @@ def generateEmptyBoard(width, height):
 
     return board
 
-def constructPathMatrix(graph, path):
-    pathMatrix = generateEmptyBoard(graph.width, graph.height)
+def constructPathMatrix (path, width, height):
+    pathMatrix = generateEmptyBoard(width, height)
 
     for node in path:
         # has to be y, x when writing to a two-dimensional matrix!

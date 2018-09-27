@@ -6,6 +6,7 @@ Functions needed to vizualise the board and the chosen path.
 """
 
 from PIL import Image
+from board import constructPathMatrix
 
 class BoardImage:
     def __init__(self, matrix, TILE_SIZE, LINE_SIZE, CIRCLE_COLOR, CIRCLE_RADIUS):
@@ -27,7 +28,9 @@ class BoardImage:
     def show(self):
         self.im.show()
 
-    def drawPath(self, pathMatrix):
+    def drawPath(self, path):
+        pathMatrix = constructPathMatrix(path, self.width, self.height)
+
         for i in range(self.height):
                 for j in range(self.width):
                     if (pathMatrix[i][j] == 'o'):
