@@ -6,6 +6,7 @@ import visualizer as vis
 import graph as grph
 import tests
 from datatypes import Queue
+import agent
 
 BOARD_PATH = "00_assets/boards/"
 BOARD_NAME = "board-1-1.txt"
@@ -27,12 +28,19 @@ def main(argv):
     if (len(argv)):
         BOARD_NAME = "board-" + argv[0] + ".txt"
 
+    # TODO remove tiles that are obstacles
     boardMatrix = brd.importBoard(BOARD_PATH, BOARD_NAME)
     print("Board matrix:")
-    brd.printMatrix(boardMatrix)
+    #brd.printMatrix(boardMatrix)
 
-    allNodes = grph.getNodes(boardMatrix)
-    queue = Queue()
+    boardGraph = grph.SquareGrid(boardMatrix)
+    start = (0,0)
+    goal = (0,5)
+
+    parents = agent.BFS(boardGraph, start, goal)
+    print(parents)
+    path = brd.constructPathMatrix(boardGraph, parents, goal)
+    brd.printMatrix(path)
 
     return
 
