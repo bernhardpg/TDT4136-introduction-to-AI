@@ -5,6 +5,7 @@ import board as brd
 import visualizer as vis
 import graph as grph
 import tests
+from datatypes import Queue
 
 BOARD_PATH = "00_assets/boards/"
 BOARD_NAME = "board-1-1.txt"
@@ -31,9 +32,7 @@ def main(argv):
     brd.printMatrix(boardMatrix)
 
     allNodes = grph.getNodes(boardMatrix)
-    print("\nNodes:")
-    print(allNodes)
-    print(grph.neighbors(allNodes[0], allNodes))
+    queue = Queue()
 
     return
 
