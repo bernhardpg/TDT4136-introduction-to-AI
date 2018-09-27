@@ -7,6 +7,34 @@ Functions needed to vizualise the board and the chosen path.
 
 from PIL import Image
 
+class BoardImage:
+    def __init__(self, matrix, TILE_SIZE, LINE_SIZE, CIRCLE_COLOR, CIRCLE_RADIUS):
+        # Initialize variables
+        self.TILE_SIZE = TILE_SIZE
+        self.LINE_SIZE = LINE_SIZE
+        self.CIRCLE_RADIUS = CIRCLE_RADIUS
+        self.CIRCLE_COLOR = CIRCLE_COLOR
+        self.width = len(matrix[0])
+        self.height = len(matrix)
+
+        # Create Image object and color matrix
+        self.im = createBoardImage(matrix, TILE_SIZE, LINE_SIZE)
+        self.colorMatrix = getColorMatrix(matrix)
+
+        # Apply color
+        colorPixels(self.im, self.colorMatrix, TILE_SIZE, LINE_SIZE)
+
+    def show(self):
+        self.im.show()
+
+    def drawPath(self, pathMatrix):
+        for i in range(self.height):
+                for j in range(self.width):
+                    if (pathMatrix[i][j] == 'o'):
+                        drawCircle(self.im, j, i,
+                                   self.TILE_SIZE, self.LINE_SIZE,
+                                   self.CIRCLE_COLOR, self.CIRCLE_RADIUS)
+
 def createBoardImage(board, TILE_SIZE, LINE_SIZE):
     """
     @param: board
@@ -27,6 +55,7 @@ def createBoardImage(board, TILE_SIZE, LINE_SIZE):
     colorPixels(boardIm, boardColors, TILE_SIZE, LINE_SIZE)
 
     return boardIm
+
 
 def colorPixels(im, colorMatrix, TILE_SIZE, LINE_SIZE):
     """
@@ -92,23 +121,6 @@ def drawCircle(im, x, y, TILE_SIZE, LINE_SIZE, CIRCLE_COLOR, CIRCLE_RADIUS):
             if ((j - ((TILE_SIZE - 1)/ 2))**2 + (i - ((TILE_SIZE - 1)/ 2))**2 < (CIRCLE_RADIUS**2)):
                 pixelMap[i + offsetX, j + offsetY] = CIRCLE_COLOR
 
-    return
-
-def drawPath(boardIm, boardPath, TILE_SIZE, LINE_SIZE, CIRCLE_COLOR, CIRCLE_RADIUS):
-    """
-    Draws a given boardPath onto the boardIm object.
-    @param boardIm: board as Image object
-    @param boardPath: path to be drawn represented by a two dimensional matrix
-        '.' represents an empty tile
-        'o' represents a part of the path
-    """
-    height = len(boardPath)
-    width = len(boardPath[0])
-
-    for i in range(height):
-        for j in range(width):
-            if (boardPath[i][j] == 'o'):
-                drawCircle(boardIm, j, i, TILE_SIZE, LINE_SIZE, CIRCLE_COLOR, CIRCLE_RADIUS)
     return
 
 def getColor(char):

@@ -6,7 +6,7 @@ Functions to import, create or manipulate a board matrix.
 """
 
 
-def importBoard(BOARD_PATH, BOARD_NAME):
+def importBoardMatrix(BOARD_PATH, BOARD_NAME):
     """
     Imports the board from a 'txt' file and returns the corresponding
     board matrix.
