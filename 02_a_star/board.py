@@ -43,26 +43,31 @@ def generateEmptyBoard(width, height):
     Generates an empty board matrix filled with '.'
 
     """
-    board = []
-    row = []
-
-    for i in range(height):
-        for j in range(width):
-            row.append('.')
-        board.append(row)
-        row = []
+    board = [['.' for x in range(width)] for y in range(height)]
 
     return board
+
+def constructPathMatrix(graph, parents, goal):
+    pathMatrix = generateEmptyBoard(graph.width, graph.height)
+    current = goal
+
+    while not current == None:
+        # has to be y, x when writing to a two-dimensional matrix!
+        pathMatrix[current[1]][current[0]] = 'o'
+        current = parents[current]
+
+    return pathMatrix
 
 def printMatrix(matrix):
     height = len(matrix)
     width = len(matrix[0])
     rowString = "| "
 
-    for i in range(height):
-        for j in range(width):
-            rowString += matrix[i][j]
-            if (j == width - 1):
+    for y in range(height):
+        for x in range(width):
+            # has to be y, x when reading from a two-dimensional matrix!
+            rowString += matrix[y][x]
+            if (x - width ==  - 1):
                 rowString += " |"
             else:
                 rowString += " "
@@ -70,3 +75,4 @@ def printMatrix(matrix):
         rowString = "| "
 
     return
+
