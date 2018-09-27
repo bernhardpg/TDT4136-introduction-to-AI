@@ -9,8 +9,8 @@ import agent
 from visualizer import BoardImage
 from visualizer import getColor
 
-BOARD_PATH = "00_assets/boards/"
-BOARD_NAME = "board-2-1.txt"
+BOARD_PATH = "01_boards/"
+BOARD_NAME = "board-1-1.txt"
 TILE_SIZE = 60
 LINE_SIZE = 2
 CIRCLE_COLOR = getColor('o')
