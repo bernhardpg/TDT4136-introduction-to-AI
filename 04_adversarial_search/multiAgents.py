@@ -128,8 +128,39 @@ class MinimaxAgent(MultiAgentSearchAgent):
           gameState.getNumAgents():
             Returns the total number of agents in the game
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        "*** MY CODE HERE ***"
+        currState = gameState
+        possiblePacmanActions = currState.getLegalActions()
+        possiblePacmanStates = [currState.generateSuccessor(0, action) for action in possiblePacmanActions]
+        possiblePacmanValues = [self.minimax(state, self.depth, 1) for state in possiblePacmanStates]
+
+        bestPacmanValue = max(possiblePacmanValues)
+        bestIndices = [index for index in range(len(possiblePacmanValues)) if possiblePacmanValues[index] == bestPacmanValue]
+        chosenIndex = random.choice(bestIndices)
+
+        return possiblePacmanActions[chosenIndex]
+
+    def minimax(self, currState, depth, agentIndex):
+        if agentIndex == currState.getNumAgents(): # Iterate one ply once all agents are iterated through
+            depth -= 1;
+
+        agentIndex = agentIndex % currState.getNumAgents() # Fix agent index
+
+        if depth == 0 or currState.isWin() or currState.isLose(): # Termination node
+            return self.evaluationFunction(currState)
+
+        legalActions = currState.getLegalActions(agentIndex)
+        possibleStates = [currState.generateSuccessor(agentIndex, action) for action in legalActions]
+        if agentIndex == 0: # MAX agent / Pacman
+            value = -99999999
+            for state in possibleStates:
+                value = max(value, self.minimax(state, depth, agentIndex + 1))
+            return value
+        else: # MIN agent / Ghost
+            value = 9999999
+            for state in possibleStates:
+                value = min(value, self.minimax(state, depth, agentIndex + 1))
+            return value
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
