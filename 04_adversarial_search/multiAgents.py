@@ -172,10 +172,59 @@ class AlphaBetaAgent(MultiAgentSearchAgent):
         """
           Returns the minimax action using self.depth and self.evaluationFunction
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        "*** MY CODE HERE ***"
+        #print("self.depth: {0}".format(self.depth))
+        currState = gameState
+        possiblePacmanActions = currState.getLegalActions(0)
+        possiblePacmanStates = [currState.generateSuccessor(0, action) for action in possiblePacmanActions]
+
+        alpha = -float('inf') # Lower bound on evaluation of MAX node
+        beta = float('inf') # Upper bound on evaluation of MIN node
+
+        possiblePacmanValues = []
+
+        for state in possiblePacmanStates:
+            value = self.alphabeta(state, 0, 1, alpha, beta)
+            possiblePacmanValues.append(value)
+            alpha = max(alpha, value)
+
+        bestPacmanValue = max(possiblePacmanValues)
+        bestIndices = [index for index in range(len(possiblePacmanValues)) if possiblePacmanValues[index] == bestPacmanValue]
+
+        return possiblePacmanActions[random.choice(bestIndices)]
+
+    def alphabeta(self, currState, depth, agentIndex, alpha, beta):
+        if agentIndex == currState.getNumAgents():
+            depth += 1; # Go down one ply once all agents are iterated through
+
+        agentIndex = agentIndex % currState.getNumAgents() # Fix agent index
+        legalActions = currState.getLegalActions(agentIndex)
+
+        if depth == self.depth or currState.isWin() or currState.isLose():
+            return self.evaluationFunction(currState) # Stop at terminal nodes
+
+        if agentIndex == 0: # Pacman agent
+            value = -float('inf')
+            for action in legalActions:
+                state = currState.generateSuccessor(agentIndex, action) # Only expand one node at a time
+                value = max(value, self.alphabeta(state, depth, agentIndex + 1, alpha, beta))
+                alpha = max(value, alpha)
+                if (alpha > beta):
+                    break # Cut away tree from beta node
+            return value
+
+        else: # Ghost agent
+            value = float('inf')
+            for action in legalActions:
+                state = currState.generateSuccessor(agentIndex, action) # Only expand one node at a time
+                value = min(value, self.alphabeta(state, depth, agentIndex + 1, alpha, beta))
+                beta = min(value, beta)
+                if (beta < alpha):
+                    break # Cut away tree from alpha node
+            return value
 
 class ExpectimaxAgent(MultiAgentSearchAgent):
+
     """
       Your expectimax agent (question 4)
     """
