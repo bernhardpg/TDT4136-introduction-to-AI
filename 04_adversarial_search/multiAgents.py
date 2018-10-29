@@ -132,7 +132,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
         currState = gameState
         possiblePacmanActions = currState.getLegalActions()
         possiblePacmanStates = [currState.generateSuccessor(0, action) for action in possiblePacmanActions]
-        possiblePacmanValues = [self.minimax(state, self.depth, 1) for state in possiblePacmanStates]
+        possiblePacmanValues = [self.minimax(state, 0, 1) for state in possiblePacmanStates]
 
         bestPacmanValue = max(possiblePacmanValues)
         bestIndices = [index for index in range(len(possiblePacmanValues)) if possiblePacmanValues[index] == bestPacmanValue]
@@ -143,11 +143,11 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
     def minimax(self, currState, depth, agentIndex):
         if agentIndex == currState.getNumAgents(): # Iterate one ply once all agents are iterated through
-            depth -= 1;
+            depth += 1;
 
         agentIndex = agentIndex % currState.getNumAgents() # Fix agent index
 
-        if depth == 0 or currState.isWin() or currState.isLose(): # Termination node
+        if depth == self.depth or currState.isWin() or currState.isLose(): # Termination node
             return self.evaluationFunction(currState)
 
         legalActions = currState.getLegalActions(agentIndex)
